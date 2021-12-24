@@ -92,7 +92,7 @@ const photoPath = path.resolve(__dirname, "../../client/photo-viewer.html");
   Pass an anonymous callback function that takes request and response as parameters. 
   In the body of the function let's call the sendFile() method of response, 
   passing in the photoPath constant as its only argument. */
-router.get("/photo-viewer", (request, resolve) => {
+router.get('/photo-viewer', (request, response) => {
   response.sendFile(photoPath);
 });
 module.exports = router;
