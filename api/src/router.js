@@ -1,5 +1,6 @@
-const { Router } = require("express");
+const { Router, response } = require("express");
 const multer = require("multer");
+const path = require("path");
 
 const router = Router();
 
@@ -62,21 +63,36 @@ Let's pass the route '/upload' as its first argument.
 The second argument should be a call to the upload object's method single(), 
 passing in the string 'photo'. The third argument is an anonymous function 
 that takes request and response as parameters. Inside the function body, */
-router.post(
-  "/upload",
-  upload.single("photo"), (request, response) => {
-    /* check if the request object has a fileValidationError property. 
+router.post("/upload", upload.single("photo"), (request, response) => {
+  /* check if the request object has a fileValidationError property. 
     If it does return a call to response.status(), passing in 400 as the lone argument. 
     Chain a call to json(), passing in an object literal with a key of error and
      a value of request.fileValidationError. */
-    if (request.fileValidatorError) return response.status(400).json({ error: request.fileValidatorError });
-    
-    /* Respond with a 201
+  if (request.fileValidatorError)
+    return response.status(400).json({ error: request.fileValidatorError });
+
+  /* Respond with a 201
 
             If there is no fileValidationError on request, let's return a call to response.status(), passing in 201. 
             Let's chain a call to json(), passing in an object literal with a key of success and 
             the boolean value true. */
-    return response.status(201).json({ success: true });
-  });
+  return response.status(201).json({ success: true });
+});
 
+/* Resolve the path to the photo viewer
+
+  In router.js, let's import path. Declare a constant called photoPath. 
+  Assign to it a call to the resolve() method of path. 
+  Pass __dirname and '../../client/photo-viewer.html'. */
+const photoPath = path.resolve(__dirname, "../../client/photo-viewer.html");
+
+/* Create the photo-viewer get route
+
+  Let's call the get() method of our router object. Pass the route '/photo-viewer' as the first argument. 
+  Pass an anonymous callback function that takes request and response as parameters. 
+  In the body of the function let's call the sendFile() method of response, 
+  passing in the photoPath constant as its only argument. */
+router.get("/photo-viewer", (request, resolve) => {
+  response.sendFile(photoPath);
+});
 module.exports = router;
