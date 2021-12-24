@@ -38,16 +38,16 @@ Pass in new Error() with the message 'not on main thread' to the call to reject(
     if (isMainThread) {
       try {
         /* Instantiate the resizeWorker */
-        const resizeWorker = new Worker(pathToMonochromeWorker, {
+        const resizeWorker = new Worker(pathToResizeWorker, {
           workerData: { source: sourcePath, destination: resizedDestination },
         });
         /* Instantiate the monochromeWorker */
-        const monochromeWorker = new Worker(pathToResizeWorker, {
+        const monochromeWorker = new Worker(pathToMonochromeWorker, {
           workerData: { source: sourcePath, destination: resizedDestination },
         });
 
         /* Register the on message event listener for the resize worker */
-        resizeWorker.on("message", () => {
+        resizeWorker.on("message", (message) => {
           resizeWorkerFinished = true;
           if(monochromeWorkerFinished){
             resolve("resizeWorker finished processing");
