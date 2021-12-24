@@ -43,7 +43,7 @@ Pass in new Error() with the message 'not on main thread' to the call to reject(
         });
         /* Instantiate the monochromeWorker */
         const monochromeWorker = new Worker(pathToMonochromeWorker, {
-          workerData: { source: sourcePath, destination: resizedDestination },
+          workerData: { source: sourcePath, destination: monochromeDestination },
         });
 
         /* Register the on message event listener for the resize worker */
