@@ -1,6 +1,7 @@
 const { Router, response } = require("express");
 const multer = require("multer");
 const path = require("path");
+const imageProcessor = require('./imageProcessor');
 
 const router = Router();
 
@@ -63,13 +64,20 @@ Let's pass the route '/upload' as its first argument.
 The second argument should be a call to the upload object's method single(), 
 passing in the string 'photo'. The third argument is an anonymous function 
 that takes request and response as parameters. Inside the function body, */
-router.post("/upload", upload.single("photo"), (request, response) => {
+router.post("/upload", upload.single("photo"), async (request, response) => {
   /* check if the request object has a fileValidationError property. 
     If it does return a call to response.status(), passing in 400 as the lone argument. 
     Chain a call to json(), passing in an object literal with a key of error and
      a value of request.fileValidationError. */
   if (request.fileValidatorError)
     return response.status(400).json({ error: request.fileValidatorError });
+
+    /* Invoke the image processor in the post route asynchronously */
+    try {
+      await imageProcessor(request.file.filename);
+    } catch (error) {
+      
+    }
 
   /* Respond with a 201
 
