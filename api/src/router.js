@@ -69,9 +69,8 @@ router.post(
     If it does return a call to response.status(), passing in 400 as the lone argument. 
     Chain a call to json(), passing in an object literal with a key of error and
      a value of request.fileValidationError. */
-    if (request.fileValidatorError) {
-      return response.status(400).json({ error: request.fileValidatorError });
-    }
+    if (request.fileValidatorError) return response.status(400).json({ error: request.fileValidatorError });
+    
     /* Respond with a 201
 
             If there is no fileValidationError on request, let's return a call to response.status(), passing in 201. 
